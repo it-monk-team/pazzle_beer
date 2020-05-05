@@ -1,16 +1,13 @@
 ![alt text](https://it-monk.com/wp-content/uploads/2020/05/cropped-ITMOCK_Logo-03-1-2048x277.png)
 
 
-# WORDPRESS REST API 範例 紐約時報文章列表
+# LINE 貼圖題目( 1 ) 買酒換贈品
 
-原始文章: https://it-monk.com/wordpress-rest-api-%e5%bf%ab%e9%80%9f%e9%96%8b%e5%a7%8b%e4%b8%80/
+原始文章: https://it-monk.com/line-%e8%b2%bc%e5%9c%96%e9%a1%8c%e7%9b%ae-1-%e8%b2%b7%e9%85%92%e6%8f%9b%e8%b4%88%e5%93%81/
 
-用紐約時報的網站是一個很著名的 WordPress 網站。
-用它當作範例引用 wordpress rest api
+最近和我爸聊天，發現他們 LINE 的聊天室除了 「早安」、「平安喜樂」 的貼圖之外，居然也有這種互相貼一些手寫題目解題防老的鼓勵貼圖。
 
-網域 : https://www.nytco.com
-API 端點: /wp-json/wp/v2/posts
-所以取得它最新文章列表的完整位置是
-https://www.nytco.com/wp-json/wp/v2/posts
+題目如下:
+![alt text](https://it-monk.com/wp-content/uploads/2020/05/S__469402581.jpg)
 
-接下來我們就可以利用這個 API 取得紐約時報的文章列表，進行新的應用或是前端的美化。
+此範例用 Vue.js 打造一個可更換條件的介面。

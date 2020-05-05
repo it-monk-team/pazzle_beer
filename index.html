@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>It-monk | 紐約時報API</title>
+	<title>It-monk | LINE 貼圖題目( 1 ) 買酒換贈品</title>
 	<link rel="icon" href="https://it-monk.com/wp-content/uploads/2020/05/cropped-ITMOCK_Logo-02-32x32.png" sizes="32x32" />
 	<link rel="icon" href="https://it-monk.com/wp-content/uploads/2020/05/cropped-ITMOCK_Logo-02-192x192.png" sizes="192x192" />
 	<link rel="apple-touch-icon" href="https://it-monk.com/wp-content/uploads/2020/05/cropped-ITMOCK_Logo-02-180x180.png" />
@@ -12,60 +12,163 @@
 
 </head>
 <body>
-	<div class="container" id="app">
-		<h1>It-monk | 紐約時報API</h1>
-		<div v-if="posts.length == 0" class="spinner-border" role="status">
-		  <span class="sr-only">Loading...</span>
-		</div>
-		<div class="row row-cols-2 row-cols-md-2">
-			<div v-for="post,index in posts" class="col">
-				<div class="card">
-					<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<h4 class="card-title">{{ post.title.rendered }}</h4>
-						<h5>{{ publish_time(post.date) }}</h5>
-						<a :href="post.link" class="btn btn-primary">文章</a>
-					</div>
-				</div>
+	<div class="container py-5" id="app">
+		<h1>It-monk | LINE 貼圖題目( 1 ) 買酒換贈品</h1>
+		
+		<div class="row">
+			<div class="col-12">
+				<h3>題目設定</h3>
 			</div>
+		</div>
+		<div class="row">	
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>酒售價</label>
+					<input class="form-control" min=1 type="number" v-model="beer_price">
+				</div>
+				<div class="form-group">
+					<label>幾個空瓶可以換一瓶新酒</label>
+					<input class="form-control" min=2 type="number" v-model="bottles_for_beer">
+				</div>
+				<div class="form-group">
+					<label>幾個瓶蓋可以換一瓶新酒</label>
+					<input class="form-control" min=2 type="number" v-model="caps_for_beer">
+				</div>
+				<div class="form-group">
+					<label>身上的錢</label>
+					<input class="form-control" min=2 type="number" v-model="money">
+				</div>
+				<h3 class="mt-5 mb-3">題目:</h3>
+				<h4>
+					啤酒 {{beer_price}} 元一瓶，<br>
+					{{caps_for_beer}} 個瓶蓋換一瓶，<br>
+					{{bottles_for_beer}} 個空瓶換一瓶，<br>	
+				</h4>
+				<h4>問: {{money}} 元可以喝幾瓶?</h4>
+				<button @click="buybeer" class="btn btn-primary">計算結果</button>
+			</div>
+			<div class="col-md-6">
+				<p v-if="log.length" v-for="msg,index in log" v-html="msg"></p>
+			</div>	
 		</div>
 	</div>	
 	
 
 
 	
-
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.1/moment.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.1/locale/zh-tw.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 	<script type="text/javascript">
-		
-		let url = "https://www.angrybirds.com/wp-json/wp/v2/posts";
+	
+	// 我有 10 元
+	let money = 10;
 
-		let app = new Vue({
-			el:"#app",
-			data:{
-				"posts":[],
-			},
-			methods:{
-				publish_time:function(_time){
-					return moment(_time).format('LLL'); 
-				}
-			},
-			mounted:function(){
-				
-				let self = this;
-				axios.get(url)
-				.then(function (response) {
-					console.log(response);
-					self.posts = response.data;
+	// 條件 =================================
+	// 酒的價格 2 元
+	let beer_price = 2;
 
-				})
-				
+	// 4 個瓶蓋可換一瓶酒
+	let caps_for_beer = 4;
+
+	// 2 個空瓶可以換一瓶酒
+	let bottles_for_beer = 2
+
+
+
+	let app = new Vue({
+		el:"#app",
+		data:{
+			money:money,
+			beer_price:beer_price,
+			caps_for_beer:caps_for_beer,
+			bottles_for_beer:bottles_for_beer,
+			log:[],
+		},
+		methods:{
 			
+			buybeer:function(){
+				
+				this.log = [];
+				
+				let caps_for_beer = this.caps_for_beer;
+ 				let bottles_for_beer = this.bottles_for_beer;
+ 				
+ 				
+				// 檢查參數是否合理
+				if( caps_for_beer <= 1 || bottles_for_beer <= 1 || caps_for_beer + bottles_for_beer <= 2){
+			
+					this.log.push("<h2>恭喜你，酒永遠喝不完。</h2>");
+			
+				}else{
+
+				//合理後開始計算 
+				 	let money = this.money;
+					// 啤酒 0 瓶
+					let beer = 0;
+
+					// 瓶蓋 0 個
+					let cap = 0;
+
+					// 空瓶子 0 個
+					let bottle = 0;
+
+					// 已經喝了 0 瓶
+					let drinked = 0;
+					
+
+					// 買酒
+					beer = Math.floor( money / beer_price );
+
+					this.log.push("<h3>我買了 " + beer + " 瓶酒</h3>");
+
+					// 只要可以繼續換就執行
+					let i = 1;
+					while( beer > 0 || cap >= caps_for_beer || bottle >= bottles_for_beer ){					    
+					    
+					    this.log.push("<h4>第 "+ i +" 輪</h4>");
+					    this.log.push("<p>我有 " + beer + " 瓶酒</p>");
+
+					    // 喝酒 使用 += 累計喝酒的數量
+					    drinked += beer;
+
+					    // 蒐集瓶蓋和瓶子
+					    cap += beer;
+					    bottle += beer;
+
+					   this.log.push("<p>我拿了 " + beer + " 個蓋子和 " + beer + " 個空瓶</p>");
+					   this.log.push("<p>現在有 " + cap + " 個蓋子");
+					   this.log.push("和現在有 " + bottle + " 個空瓶</p>");  
+
+					   //蒐集完之後，手邊已經沒有酒了
+					   beer = 0;
+					   // 用瓶蓋換酒
+					   beer += Math.floor( cap / caps_for_beer );
+					   cap = cap % caps_for_beer;
+
+					   // 用空瓶換酒
+					   beer += Math.floor( bottle / bottles_for_beer );
+					   bottle = bottle % bottles_for_beer;
+					   
+					   i++;
+					   this.log.push("<p>再換 "+ beer +" 瓶酒</p>");
+					   this.log.push("<p>還剩 " + cap + " 個蓋子");
+					   this.log.push("和 " + bottle + " 個空瓶</p>");
+					   this.log.push("<hr>");  
+					 
+					}
+					this.log.push("我總共喝了 " + drinked + " 瓶酒");
+					this.log.push("剩下 " + cap + " 個蓋子");
+					this.log.push("剩下 " + bottle + " 個空瓶");
+
+				}
+				
 			}
-		});
+		},
+		mounted:function(){
+			
+		
+		
+		}
+	});
 
 		
 	</script>
