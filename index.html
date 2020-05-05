@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>It-monk | 紐約時報API</title>
+	<link rel="icon" href="https://it-monk.com/wp-content/uploads/2020/05/cropped-ITMOCK_Logo-02-32x32.png" sizes="32x32" />
+	<link rel="icon" href="https://it-monk.com/wp-content/uploads/2020/05/cropped-ITMOCK_Logo-02-192x192.png" sizes="192x192" />
+	<link rel="apple-touch-icon" href="https://it-monk.com/wp-content/uploads/2020/05/cropped-ITMOCK_Logo-02-180x180.png" />
+	<meta name="msapplication-TileImage" content="https://it-monk.com/wp-content/uploads/2020/05/cropped-ITMOCK_Logo-02-270x270.png" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+	<div class="container" id="app">
+		<h1>It-monk | 紐約時報API</h1>
+		<div v-if="posts.length == 0" class="spinner-border" role="status">
+		  <span class="sr-only">Loading...</span>
+		</div>
+		<div class="row row-cols-2 row-cols-md-2">
+			<div v-for="post,index in posts" class="col">
+				<div class="card">
+					<!-- <img src="..." class="card-img-top" alt="..."> -->
+					<div class="card-body">
+						<h4 class="card-title">{{ post.title.rendered }}</h4>
+						<h5>{{ publish_time(post.date) }}</h5>
+						<a :href="post.link" class="btn btn-primary">文章</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+
+
+	
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.1/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.1/locale/zh-tw.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+	<script type="text/javascript">
+		
+		let url = "https://www.angrybirds.com/wp-json/wp/v2/posts";
+
+		let app = new Vue({
+			el:"#app",
+			data:{
+				"posts":[],
+			},
+			methods:{
+				publish_time:function(_time){
+					return moment(_time).format('LLL'); 
+				}
+			},
+			mounted:function(){
+				
+				let self = this;
+				axios.get(url)
+				.then(function (response) {
+					console.log(response);
+					self.posts = response.data;
+
+				})
+				
+			
+			}
+		});
+
+		
+	</script>
+</body>
+</html>
