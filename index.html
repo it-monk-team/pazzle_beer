@@ -47,7 +47,7 @@
 				<h4>問: {{money}} 元可以喝幾瓶?</h4>
 				<button @click="buybeer" class="btn btn-primary">計算結果</button>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 mb-md-5">
 				<p v-if="log.length" v-for="msg,index in log" v-html="msg"></p>
 			</div>	
 		</div>
@@ -102,6 +102,7 @@
 
 				//合理後開始計算 
 				 	let money = this.money;
+				 	let beer_price = this.beer_price;
 					// 啤酒 0 瓶
 					let beer = 0;
 
