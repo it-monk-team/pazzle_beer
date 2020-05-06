@@ -47,7 +47,7 @@
 				<h4>問: {{money}} 元可以喝幾瓶?</h4>
 				<button @click="buybeer" class="btn btn-primary">計算結果</button>
 			</div>
-			<div class="col-md-6 mb-md-5">
+			<div class="col-md-6 mt-md-5">
 				<p v-if="log.length" v-for="msg,index in log" v-html="msg"></p>
 			</div>	
 		</div>
@@ -136,8 +136,8 @@
 					    bottle += beer;
 
 					   this.log.push("<p>我拿了 " + beer + " 個蓋子和 " + beer + " 個空瓶</p>");
-					   this.log.push("<p>現在有 " + cap + " 個蓋子");
-					   this.log.push("和現在有 " + bottle + " 個空瓶</p>");  
+					   this.log.push("<p>總共有 " + cap + " 個蓋子");
+					   this.log.push("和 " + bottle + " 個空瓶</p>");  
 
 					   //蒐集完之後，手邊已經沒有酒了
 					   beer = 0;
@@ -156,9 +156,10 @@
 					   this.log.push("<hr>");  
 					 
 					}
-					this.log.push("我總共喝了 " + drinked + " 瓶酒");
-					this.log.push("剩下 " + cap + " 個蓋子");
-					this.log.push("剩下 " + bottle + " 個空瓶");
+
+					this.log.push("<h2>我總共喝了 " + drinked + " 瓶酒</h2>");
+					this.log.push("<p>剩下 " + cap + " 個蓋子");
+					this.log.push("和 " + bottle + " 個空瓶</p>");
 
 				}
 				
